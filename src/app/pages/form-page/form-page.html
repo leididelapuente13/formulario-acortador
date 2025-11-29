@@ -1,0 +1,91 @@
+<p-toast></p-toast>
+
+<div class="container">
+  <p-card>
+    <ng-template pTemplate="header">
+      <h2>Acortador de URLs</h2>
+    </ng-template>
+
+    <div class="form-container">
+      <form (ngSubmit)="shortenUrl()" class="p-fluid">
+        <div class="field" style="margin-bottom: 5px">
+          <label for="url">Ingresa tu URL</label>
+          <input
+            pInputText
+            id="url"
+            [(ngModel)]="url"
+            name="url"
+            placeholder="https://ejemplo.com"
+            [disabled]="loading"
+          />
+        </div>
+
+        <p-button
+          type="submit"
+          label="Acortar URL"
+          icon="pi pi-link"
+          [loading]="loading"
+          [disabled]="!url"
+        ></p-button>
+      </form>
+
+      @if (error) {
+      <p-message severity="error" [text]="error"></p-message>
+      } @if (loading) {
+      <div class="loading-container">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
+      } @if (shortUrl && !loading) {
+      <div class="result-container">
+        <p-card>
+          <ng-template pTemplate="header">
+            <div class="result-header">
+              <h3>¡URL Acortada!</h3>
+              <p-button
+                icon="pi pi-refresh"
+                (onClick)="reset()"
+                [text]="true"
+                [rounded]="true"
+                severity="secondary"
+                pTooltip="Nueva URL"
+              ></p-button>
+            </div>
+          </ng-template>
+
+          <div class="url-info">
+            <div class="url-group">
+              <label>URL Original:</label>
+              <div class="url-display">
+                <input pInputText [value]="originalUrl" readonly />
+              </div>
+            </div>
+
+            <div class="url-group">
+              <label>URL Acortada:</label>
+              <div class="url-display">
+                <input pInputText [value]="shortUrl" readonly />
+              </div>
+            </div>
+
+            <div class="action-buttons">
+              <p-button
+                label="Copiar URL"
+                icon="pi pi-copy"
+                (onClick)="copyToClipboard()"
+                severity="success"
+              ></p-button>
+
+              <p-button
+                label="Abrir URL Original"
+                icon="pi pi-external-link"
+                (onClick)="openOriginalUrl()"
+                severity="info"
+              ></p-button>
+            </div>
+          </div>
+        </p-card>
+      </div>
+      }
+    </div>
+  </p-card>
+</div>
